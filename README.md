@@ -1,18 +1,16 @@
 # claude-statusline
 
-Configure your Claude Code statusline to show limits, directory and git info
+Customized Claude Code statusline showing directory, context usage, git info, session duration, and rate limits in a compact single-line format.
 
-![demo](./.github/demo.png)
+Based on [@kamranahmedse/claude-statusline](https://github.com/kamranahmedse/claude-statusline).
 
 ## Install
 
-Run the command below to set it up
-
 ```bash
-npx @kamranahmedse/claude-statusline
+npx github:seriabov/claude-statusline
 ```
 
-It backups your old status line if any and copies the status line script to `~/.claude/statusline.sh` and configures your Claude Code settings.
+This backs up your old statusline (if any), copies the script to `~/.claude/statusline.sh`, and configures your Claude Code settings.
 
 ## Requirements
 
@@ -29,7 +27,7 @@ brew install jq
 ## Uninstall
 
 ```bash
-npx @kamranahmedse/claude-statusline --uninstall
+npx github:seriabov/claude-statusline --uninstall
 ```
 
 If you had a previous statusline, it restores it from the backup. Otherwise it removes the script and cleans up your settings.

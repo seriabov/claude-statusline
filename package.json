@@ -1,5 +1,5 @@
 {
-  "name": "@kamranahmedse/claude-statusline",
+  "name": "@seriabov/claude-statusline",
   "version": "1.0.4",
   "description": "A status line for Claude Code CLI showing model, context usage, rate limits, and more",
   "bin": {
