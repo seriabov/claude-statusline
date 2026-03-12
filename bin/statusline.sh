@@ -175,11 +175,9 @@ if [ -n "$session_start" ] && [ "$session_start" != "null" ]; then
     fi
 fi
 
-line1="${blue}${model_name}${reset}"
+line1="${cyan}${dirname}${reset}"
 line1+="${sep}"
-line1+="✍️ ${pct_color}${pct_used}%${reset}"
-line1+="${sep}"
-line1+="${cyan}${dirname}${reset}"
+line1+="◈ ${pct_color}${pct_used}%${reset}"
 if [ -n "$git_branch" ]; then
     line1+=" ${green}(${git_branch}${red}${git_dirty}${green})${reset}"
 fi
@@ -291,8 +289,6 @@ if [ -n "$usage_data" ] && echo "$usage_data" | jq -e . >/dev/null 2>&1; then
     five_hour_pct_color=$(color_for_pct "$five_hour_pct")
     five_hour_pct_fmt=$(printf "%3d" "$five_hour_pct")
 
-    rate_lines+="${white}current${reset} ${five_hour_bar} ${five_hour_pct_color}${five_hour_pct_fmt}%${reset} ${dim}⟳${reset} ${white}${five_hour_reset}${reset}"
-
     seven_day_pct=$(echo "$usage_data" | jq -r '.seven_day.utilization // 0' | awk '{printf "%.0f", $1}')
     seven_day_reset_iso=$(echo "$usage_data" | jq -r '.seven_day.resets_at // empty')
     seven_day_reset=$(format_reset_time "$seven_day_reset_iso" "datetime")
@@ -300,7 +296,10 @@ if [ -n "$usage_data" ] && echo "$usage_data" | jq -e . >/dev/null 2>&1; then
     seven_day_pct_color=$(color_for_pct "$seven_day_pct")
     seven_day_pct_fmt=$(printf "%3d" "$seven_day_pct")
 
-    rate_lines+="\n${white}weekly${reset}  ${seven_day_bar} ${seven_day_pct_color}${seven_day_pct_fmt}%${reset} ${dim}⟳${reset} ${white}${seven_day_reset}${reset}"
+    rate_lines+="${white}current${reset} ${five_hour_bar} ${five_hour_pct_color}${five_hour_pct_fmt}%${reset} ${dim}⟳${reset} ${white}${five_hour_reset}${reset}"
+    rate_lines+=" ${dim}│${reset} "
+    rate_lines+="${white}weekly${reset} ${seven_day_bar} ${seven_day_pct_color}${seven_day_pct_fmt}%${reset} ${dim}⟳${reset} ${white}${seven_day_reset}${reset}"
+    # rate_lines+="\n${white}weekly${reset}  ${seven_day_bar} ${seven_day_pct_color}${seven_day_pct_fmt}%${reset} ${dim}⟳${reset} ${white}${seven_day_reset}${reset}"
 
     extra_enabled=$(echo "$usage_data" | jq -r '.extra_usage.is_enabled // false')
     if [ "$extra_enabled" = "true" ]; then
@@ -315,8 +314,10 @@ if [ -n "$usage_data" ] && echo "$usage_data" | jq -e . >/dev/null 2>&1; then
             extra_reset=$(date -d "$(date +%Y-%m-01) +1 month" +"%b %-d" 2>/dev/null | tr '[:upper:]' '[:lower:]')
         fi
 
-        extra_col="${white}extra${reset}   ${extra_bar} ${extra_pct_color}\$${extra_used}${dim}/${reset}${white}\$${extra_limit}${reset} ${dim}⟳${reset} ${white}${extra_reset}${reset}"
-        rate_lines+="\n${extra_col}"
+        extra_col="${white}extra${reset}   ${extra_bar} ${extra_pct_color}\$${extra_used}${dim}/${reset}${white}\$${extra_limit}${reset}"
+        extra_reset_line="${dim}resets ${reset}${white}${extra_reset}${reset}"
+        # rate_lines+="\n${extra_col}"
+        # rate_lines+="\n${extra_reset_line}"
     fi
 fi
 
